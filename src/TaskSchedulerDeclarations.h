@@ -190,6 +190,8 @@ class Task {
 
     INLINE bool isFirstIteration() ;
     INLINE bool isLastIteration() ;
+    INLINE unsigned long getTotalRuntime() ;
+    INLINE unsigned long getAverageRuntime() ;
 
 #ifdef _TASK_TIMECRITICAL
     INLINE long getOverrun() ;
@@ -222,6 +224,7 @@ class Task {
     volatile unsigned long    iInterval;             // execution interval in milliseconds (or microseconds). 0 - immediate
     volatile unsigned long    iDelay;                // actual delay until next execution (usually equal iInterval)
     volatile unsigned long    iPreviousMillis;       // previous invocation time (millis).  Next invocation = iPreviousMillis + iInterval.  Delayed tasks will "catch up"
+    volatile unsigned long iRuntime;
 
 #ifdef _TASK_TIMECRITICAL
     volatile long             iOverrun;              // negative if task is "catching up" to it's schedule (next invocation time is already in the past)

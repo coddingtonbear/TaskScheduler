@@ -366,6 +366,19 @@ void Task::setOnDisable(TaskOnDisable aCallback) { iOnDisable = aCallback; }
 #endif // _TASK_OO_CALLBACKS
 
 
+unsigned long Task::getAverageRuntime() {
+    if(iRunCounter == 0) {
+        return 0;
+    }
+    return iRuntime / iRunCounter;
+}
+
+unsigned long Task::getTotalRuntime() {
+    return iRuntime;
+}
+
+
+
 /** Resets (initializes) the task/
  * Task is not enabled and is taken out
  * out of the execution chain as a result
@@ -379,6 +392,7 @@ void Task::reset() {
     iNext = NULL;
     iScheduler = NULL;
     iRunCounter = 0;
+    iRuntime = 0;
 
 #ifdef _TASK_TIMECRITICAL
     iOverrun = 0;
@@ -962,6 +976,7 @@ bool Scheduler::execute() {
                     idleRun = false;
                 }
 #endif // _TASK_OO_CALLBACKS
+                iCurrent->iRuntime += _TASK_TIME_FUNCTION() - m;
 
             }
         } while (0);    //guaranteed single run - allows use of "break" to exit
